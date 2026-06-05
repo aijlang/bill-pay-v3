@@ -101,7 +101,7 @@ const BillItem: React.FC<BillItemProps> = ({ bill, onMarkAsPaid, onUndoPayment, 
         <div
             ref={setNodeRef}
             style={style}
-            className={`bg-white rounded-xl shadow-md border overflow-hidden transition-all duration-300 flex flex-col ${paid ? 'border-green-500 bg-emerald-50' : 'border-slate-200'} ${isDragging ? 'shadow-lg' : ''}`}
+            className={`bg-white rounded-xl shadow-md border overflow-hidden transition-all duration-300 flex flex-col ${paid ? 'border-green-500 bg-emerald-100' : 'border-slate-200'} ${isDragging ? 'shadow-lg' : ''}`}
         >
             <div className="p-5 flex-grow">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
