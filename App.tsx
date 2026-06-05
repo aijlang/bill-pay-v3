@@ -75,6 +75,10 @@ const App: React.FC = () => {
         }
     }, [setBills]);
 
+    const handleReorderBills = useCallback((reorderedBills: Bill[]) => {
+        setBills(reorderedBills);
+    }, [setBills]);
+
     const handleExport = useCallback((format: 'csv' | 'xlsx' | 'pdf') => {
         const paidBillsThisMonth = bills.filter(bill => bill.lastPayment && isPaidThisMonth(bill.lastPayment.date));
 
@@ -136,12 +140,15 @@ const App: React.FC = () => {
         }
     }, [bills]);
 
-    const paidBillsThisMonth = bills.filter(bill => bill.lastPayment && isPaidThisMonth(bill.lastPayment.date));
-    const unpaidBills = bills.filter(bill => !isPaidThisMonth(bill.lastPayment?.date));
+    // Sort bills by order for display
+    const sortedBills = [...bills].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+    const paidBillsThisMonth = sortedBills.filter(bill => bill.lastPayment && isPaidThisMonth(bill.lastPayment.date));
+    const unpaidBills = sortedBills.filter(bill => !isPaidThisMonth(bill.lastPayment?.date));
     const totalPaid = paidBillsThisMonth.reduce((sum, bill) => sum + (bill.lastPayment?.amount || 0), 0);
     const totalOwed = unpaidBills.reduce((sum, bill) => sum + (bill.amountDue || 0), 0);
     const paidCount = paidBillsThisMonth.length;
-    const totalBills = bills.length;
+    const totalBills = sortedBills.length;
 
     return (
         <div className="min-h-screen bg-slate-200 font-sans text-slate-800">
@@ -212,7 +219,7 @@ const App: React.FC = () => {
                 </Modal>
 
                 {/* Main Content Area: Dashboard and Bill List */}
-                {bills.length > 0 ? (
+                {sortedBills.length > 0 ? (
                     <>
                         <SummaryDashboard
                             totalPaid={totalPaid}
@@ -224,12 +231,13 @@ const App: React.FC = () => {
                             onEditBalance={() => setIsBalanceModalOpen(true)}
                         />
                         <BillList
-                            bills={bills}
+                            bills={sortedBills}
                             onMarkAsPaid={handleMarkAsPaid}
                             onUndoPayment={handleUndoPayment}
                             onDeleteBill={handleDeleteBill}
                             onEditBill={handleEditBill}
                             onExport={handleExport}
+                            onReorderBills={handleReorderBills}
                             balance={balance}
                         />
                     </>

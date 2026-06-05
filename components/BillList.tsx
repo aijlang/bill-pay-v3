@@ -1,5 +1,20 @@
 
 import React from 'react';
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    rectSortingStrategy,
+} from '@dnd-kit/sortable';
 import type { Bill, BillUpdatePayload } from '../types';
 import BillItem from './BillItem';
 import { isPaidThisMonth } from '../utils/formatters';
@@ -11,6 +26,7 @@ interface BillListProps {
     onDeleteBill: (id: string) => void;
     onEditBill: (id: string, updates: BillUpdatePayload) => void;
     onExport: (format: 'csv' | 'xlsx' | 'pdf') => void;
+    onReorderBills: (reorderedBills: Bill[]) => void;
     balance?: number;
 }
 
@@ -21,9 +37,33 @@ const BillList: React.FC<BillListProps> = ({
     onDeleteBill,
     onEditBill,
     onExport,
+    onReorderBills,
     balance = 0,
 }) => {
     const hasPaidBillsThisMonth = bills.some(bill => bill.lastPayment && isPaidThisMonth(bill.lastPayment.date));
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            distance: 8,
+        }),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+
+        if (over && active.id !== over.id) {
+            const oldIndex = bills.findIndex(bill => bill.id === active.id);
+            const newIndex = bills.findIndex(bill => bill.id === over.id);
+            const reorderedBills = arrayMove(bills, oldIndex, newIndex).map((bill, index) => ({
+                ...bill,
+                order: index,
+            }));
+            onReorderBills(reorderedBills);
+        }
+    };
 
     return (
         <div>
@@ -62,19 +102,30 @@ const BillList: React.FC<BillListProps> = ({
                     )}
                  </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {bills.map(bill => (
-                    <BillItem
-                        key={bill.id}
-                        bill={bill}
-                        onMarkAsPaid={onMarkAsPaid}
-                        onUndoPayment={onUndoPayment}
-                        onDeleteBill={onDeleteBill}
-                        onEditBill={onEditBill}
-                        balance={balance}
-                    />
-                ))}
-            </div>
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+            >
+                <SortableContext
+                    items={bills.map(bill => bill.id)}
+                    strategy={rectSortingStrategy}
+                >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {bills.map(bill => (
+                            <BillItem
+                                key={bill.id}
+                                bill={bill}
+                                onMarkAsPaid={onMarkAsPaid}
+                                onUndoPayment={onUndoPayment}
+                                onDeleteBill={onDeleteBill}
+                                onEditBill={onEditBill}
+                                balance={balance}
+                            />
+                        ))}
+                    </div>
+                </SortableContext>
+            </DndContext>
         </div>
     );
 };

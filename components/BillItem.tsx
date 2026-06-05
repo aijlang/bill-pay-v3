@@ -1,8 +1,11 @@
 
 import React, { useState } from 'react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import type { Bill, BillUpdatePayload } from '../types';
 import { CheckCircleIcon, TrashIcon, ExternalLinkIcon, UndoIcon, PencilIcon, CheckIcon } from '../constants';
 import { isPaidThisMonth, formatDate, formatCurrency, formatDueDate, isPastDue } from '../utils/formatters';
+import DragHandle from './DragHandle';
 
 interface BillItemProps {
     bill: Bill;
@@ -17,6 +20,13 @@ const BillItem: React.FC<BillItemProps> = ({ bill, onMarkAsPaid, onUndoPayment, 
     const [isPaying, setIsPaying] = useState(false);
     const [amount, setAmount] = useState('');
     const [payError, setPayError] = useState('');
+
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: bill.id });
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    };
 
     const parsedAmount = amount ? parseFloat(amount) : 0;
     const balanceAfterPayment = Math.max(0, balance - parsedAmount);
@@ -88,7 +98,11 @@ const BillItem: React.FC<BillItemProps> = ({ bill, onMarkAsPaid, onUndoPayment, 
     };
     
     return (
-        <div className={`bg-white rounded-xl shadow-md border overflow-hidden transition-all duration-300 flex flex-col ${paid ? 'border-green-300 bg-green-50' : 'border-slate-200'}`}>
+        <div
+            ref={setNodeRef}
+            style={style}
+            className={`bg-white rounded-xl shadow-md border overflow-hidden transition-all duration-300 flex flex-col ${paid ? 'border-green-500 bg-emerald-50' : 'border-slate-200'} ${isDragging ? 'shadow-lg' : ''}`}
+        >
             <div className="p-5 flex-grow">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div className="flex-grow flex items-start gap-4">
@@ -101,6 +115,7 @@ const BillItem: React.FC<BillItemProps> = ({ bill, onMarkAsPaid, onUndoPayment, 
                         </div>
                         <div className="flex-grow">
                             <div className="flex items-center gap-3">
+                                <DragHandle id={bill.id} />
                                 <h3 className="text-xl font-semibold text-slate-800">{bill.name}</h3>
                                 {!paid && !isEditing && (
                                     <button

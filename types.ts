@@ -10,6 +10,7 @@ export interface Bill {
     amount: number;
   };
   logoUrl?: string;
+  order?: number;
 }
 
 export type BillUpdatePayload = Partial<Pick<Bill, 'amountDue' | 'dueDate' | 'lastPayment' | 'logoUrl'>>;
