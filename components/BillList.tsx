@@ -11,16 +11,18 @@ interface BillListProps {
     onDeleteBill: (id: string) => void;
     onEditBill: (id: string, updates: BillUpdatePayload) => void;
     onExport: (format: 'csv' | 'xlsx' | 'pdf') => void;
+    balance?: number;
 }
 
-const BillList: React.FC<BillListProps> = ({ 
-    bills, 
-    onMarkAsPaid, 
-    onUndoPayment, 
+const BillList: React.FC<BillListProps> = ({
+    bills,
+    onMarkAsPaid,
+    onUndoPayment,
     onDeleteBill,
     onEditBill,
     onExport,
- }) => {
+    balance = 0,
+}) => {
     const hasPaidBillsThisMonth = bills.some(bill => bill.lastPayment && isPaidThisMonth(bill.lastPayment.date));
 
     return (
@@ -62,13 +64,14 @@ const BillList: React.FC<BillListProps> = ({
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {bills.map(bill => (
-                    <BillItem 
-                        key={bill.id} 
-                        bill={bill} 
-                        onMarkAsPaid={onMarkAsPaid} 
+                    <BillItem
+                        key={bill.id}
+                        bill={bill}
+                        onMarkAsPaid={onMarkAsPaid}
                         onUndoPayment={onUndoPayment}
                         onDeleteBill={onDeleteBill}
                         onEditBill={onEditBill}
+                        balance={balance}
                     />
                 ))}
             </div>

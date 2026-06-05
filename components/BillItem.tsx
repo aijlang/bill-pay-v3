@@ -10,12 +10,16 @@ interface BillItemProps {
     onUndoPayment: (id: string) => void;
     onDeleteBill: (id: string) => void;
     onEditBill: (id: string, updates: BillUpdatePayload) => void;
+    balance?: number;
 }
 
-const BillItem: React.FC<BillItemProps> = ({ bill, onMarkAsPaid, onUndoPayment, onDeleteBill, onEditBill }) => {
+const BillItem: React.FC<BillItemProps> = ({ bill, onMarkAsPaid, onUndoPayment, onDeleteBill, onEditBill, balance = 0 }) => {
     const [isPaying, setIsPaying] = useState(false);
     const [amount, setAmount] = useState('');
     const [payError, setPayError] = useState('');
+
+    const parsedAmount = amount ? parseFloat(amount) : 0;
+    const balanceAfterPayment = Math.max(0, balance - parsedAmount);
     
     const [isEditing, setIsEditing] = useState(false);
     const [editedAmount, setEditedAmount] = useState(bill.amountDue?.toString() ?? '');
@@ -225,10 +229,10 @@ const BillItem: React.FC<BillItemProps> = ({ bill, onMarkAsPaid, onUndoPayment, 
 
             {isPaying && !paid && (
                 <div className="p-5 bg-slate-100 border-t border-slate-200">
-                    <h4 className="text-sm font-semibold text-slate-700 mb-2">Confirm Payment</h4>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                        <div className="relative flex-grow">
-                             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <h4 className="text-sm font-semibold text-slate-700 mb-3">Confirm Payment</h4>
+                    <div className="flex flex-col gap-3 mb-3">
+                        <div className="relative">
+                            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                 <span className="text-gray-500 sm:text-sm">$</span>
                             </div>
                             <input
@@ -241,16 +245,30 @@ const BillItem: React.FC<BillItemProps> = ({ bill, onMarkAsPaid, onUndoPayment, 
                                 min="0.01"
                             />
                         </div>
-                        <div className="flex items-center gap-2">
-                            <button onClick={handleConfirmPayment} className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition w-full sm:w-auto">
-                                Confirm
-                            </button>
-                             <button onClick={handleCancelPayment} className="inline-flex items-center justify-center px-4 py-2 border border-slate-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition w-full sm:w-auto">
-                                Cancel
-                            </button>
-                        </div>
+                        {balance > 0 && (
+                            <div className="bg-white rounded-md p-3 border border-slate-200">
+                                <div className="flex justify-between items-center text-sm mb-2">
+                                    <span className="text-slate-600">Current Balance:</span>
+                                    <span className="font-semibold text-slate-800">{formatCurrency(balance)}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-slate-600">After Payment:</span>
+                                    <span className={`font-semibold ${balanceAfterPayment < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                                        {formatCurrency(balanceAfterPayment)}
+                                    </span>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                     {payError && <p className="text-sm text-red-600 mt-2">{payError}</p>}
+                    <div className="flex items-center gap-2">
+                        <button onClick={handleConfirmPayment} className="flex-1 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition">
+                            Confirm
+                        </button>
+                        <button onClick={handleCancelPayment} className="flex-1 inline-flex items-center justify-center px-4 py-2 border border-slate-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
+                            Cancel
+                        </button>
+                    </div>
+                    {payError && <p className="text-sm text-red-600 mt-2">{payError}</p>}
                 </div>
             )}
 

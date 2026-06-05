@@ -17,9 +17,11 @@ const App: React.FC = () => {
     const [localBills, setLocalBills] = useLocalStorage<Bill[]>('bills', []);
     const bills = localBills;
     const setBills = setLocalBills;
-    
+    const [balance, setBalance] = useLocalStorage<number>('balance', 0);
+
     const [isLoading, setIsLoading] = useState(false);
     const [isAddBillModalOpen, setIsAddBillModalOpen] = useState(false);
+    const [isBalanceModalOpen, setIsBalanceModalOpen] = useState(false);
     
     const handleEditBill = useCallback(async (id: string, updates: BillUpdatePayload) => {
         setBills(prev => prev.map(bill => bill.id === id ? { ...bill, ...updates } : bill));
@@ -45,9 +47,13 @@ const App: React.FC = () => {
     const handleMarkAsPaid = useCallback(async (id: string, amount: number) => {
         const lastPayment = { date: new Date().toISOString(), amount };
         setBills(prev => prev.map(bill => bill.id === id ? { ...bill, lastPayment } : bill));
-    }, [setBills]);
+        // Deduct from balance
+        setBalance(prev => Math.max(0, prev - amount));
+    }, [setBills, setBalance]);
 
     const handleUndoPayment = useCallback(async (id: string) => {
+        // Get the bill to retrieve the payment amount
+        const bill = bills.find(b => b.id === id);
         setBills(prev =>
             prev.map(bill => {
                 if (bill.id === id) {
@@ -57,7 +63,11 @@ const App: React.FC = () => {
                 return bill;
             })
         );
-    }, [setBills]);
+        // Add the amount back to balance
+        if (bill?.lastPayment) {
+            setBalance(prev => prev + bill.lastPayment.amount);
+        }
+    }, [setBills, setBalance, bills]);
 
     const handleDeleteBill = useCallback(async (id: string) => {
         if (window.confirm('Are you sure you want to delete this bill?')) {
@@ -154,23 +164,73 @@ const App: React.FC = () => {
                     <AddBillForm onAddBill={handleAddBill} />
                 </Modal>
 
+                <Modal
+                    isOpen={isBalanceModalOpen}
+                    onClose={() => setIsBalanceModalOpen(false)}
+                    title="Update Your Balance"
+                >
+                    <p className="text-sm sm:text-base text-slate-500 mb-4">Enter your current available funds.</p>
+                    <div className="space-y-4">
+                        <div>
+                            <label htmlFor="balance-input" className="block text-sm font-medium text-slate-600 mb-2">
+                                Current Balance
+                            </label>
+                            <div className="relative">
+                                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span className="text-gray-500 text-sm">$</span>
+                                </div>
+                                <input
+                                    id="balance-input"
+                                    type="number"
+                                    defaultValue={balance}
+                                    placeholder="0.00"
+                                    step="0.01"
+                                    min="0"
+                                    className="w-full pl-7 pr-3 py-2 bg-white text-slate-900 placeholder-slate-400 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                    onKeyPress={(e) => {
+                                        if (e.key === 'Enter') {
+                                            const newBalance = parseFloat((e.target as HTMLInputElement).value) || 0;
+                                            setBalance(Math.max(0, newBalance));
+                                            setIsBalanceModalOpen(false);
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => {
+                                const input = document.getElementById('balance-input') as HTMLInputElement;
+                                const newBalance = parseFloat(input.value) || 0;
+                                setBalance(Math.max(0, newBalance));
+                                setIsBalanceModalOpen(false);
+                            }}
+                            className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium"
+                        >
+                            Save Balance
+                        </button>
+                    </div>
+                </Modal>
+
                 {/* Main Content Area: Dashboard and Bill List */}
                 {bills.length > 0 ? (
                     <>
-                        <SummaryDashboard 
+                        <SummaryDashboard
                             totalPaid={totalPaid}
                             totalOwed={totalOwed}
                             paidCount={paidCount}
                             totalBills={totalBills}
                             unpaidBills={unpaidBills}
+                            balance={balance}
+                            onEditBalance={() => setIsBalanceModalOpen(true)}
                         />
-                        <BillList 
-                            bills={bills} 
-                            onMarkAsPaid={handleMarkAsPaid} 
+                        <BillList
+                            bills={bills}
+                            onMarkAsPaid={handleMarkAsPaid}
                             onUndoPayment={handleUndoPayment}
                             onDeleteBill={handleDeleteBill}
                             onEditBill={handleEditBill}
                             onExport={handleExport}
+                            balance={balance}
                         />
                     </>
                 ) : (

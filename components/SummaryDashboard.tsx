@@ -9,6 +9,8 @@ interface SummaryDashboardProps {
     paidCount: number;
     totalBills: number;
     unpaidBills: Bill[];
+    balance: number;
+    onEditBalance: () => void;
 }
 
 const statCardThemes = {
@@ -42,26 +44,35 @@ const statCardThemes = {
     },
 };
 
-const StatCard: React.FC<{ 
-    icon: React.ReactNode; 
-    title: string; 
-    value: string; 
+const StatCard: React.FC<{
+    icon: React.ReactNode;
+    title: string;
+    value: string;
     theme: typeof statCardThemes.green;
-}> = ({ icon, title, value, theme }) => (
-    <div className={`${theme.card} rounded-lg p-4 flex items-center shadow-sm border-2 ${theme.border}`}>
+    onClick?: () => void;
+    isClickable?: boolean;
+}> = ({ icon, title, value, theme, onClick, isClickable = false }) => (
+    <div
+        onClick={onClick}
+        className={`${theme.card} rounded-lg p-4 flex items-center shadow-sm border-2 ${theme.border} ${isClickable ? 'cursor-pointer hover:shadow-md transition-shadow' : ''}`}
+    >
         <div className={`p-3 rounded-full mr-4 ${theme.icon}`}>
             <span className="text-white">{icon}</span>
         </div>
-        <div>
+        <div className="flex-1">
             <p className={`text-sm font-medium ${theme.title}`}>{title}</p>
             <p className={`text-2xl font-bold ${theme.value}`}>{value}</p>
         </div>
+        {isClickable && (
+            <div className="text-sm text-slate-400 ml-2">✎</div>
+        )}
     </div>
 );
 
-const SummaryDashboard: React.FC<SummaryDashboardProps> = ({ totalPaid, totalOwed, paidCount, totalBills, unpaidBills }) => {
+const SummaryDashboard: React.FC<SummaryDashboardProps> = ({ totalPaid, totalOwed, paidCount, totalBills, unpaidBills, balance, onEditBalance }) => {
     const remainingCount = totalBills - paidCount;
     const progressPercentage = totalBills > 0 ? (paidCount / totalBills) * 100 : 0;
+    const remainingBalance = Math.max(0, balance - totalOwed);
 
     const dueSoonBills = unpaidBills
         .filter(bill => bill.dueDate)
@@ -71,30 +82,48 @@ const SummaryDashboard: React.FC<SummaryDashboardProps> = ({ totalPaid, totalOwe
     return (
         <div className="mb-8">
             <h2 className="text-2xl font-bold text-slate-700 mb-4">Monthly Summary</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <StatCard 
-                    icon={DollarIcon} 
-                    title="Total Paid" 
-                    value={formatCurrency(totalPaid)} 
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
+                <StatCard
+                    icon={DollarIcon}
+                    title="Total Paid"
+                    value={formatCurrency(totalPaid)}
                     theme={statCardThemes.green}
                 />
-                <StatCard 
-                    icon={WalletIcon} 
-                    title="Total Owed" 
-                    value={formatCurrency(totalOwed)} 
+                <StatCard
+                    icon={WalletIcon}
+                    title="Total Owed"
+                    value={formatCurrency(totalOwed)}
                     theme={statCardThemes.red}
                 />
-                <StatCard 
-                    icon={ChecklistIcon} 
-                    title="Bills Paid" 
-                    value={`${paidCount} / ${totalBills}`} 
+                <StatCard
+                    icon={ChecklistIcon}
+                    title="Bills Paid"
+                    value={`${paidCount} / ${totalBills}`}
                     theme={statCardThemes.indigo}
                 />
-                <StatCard 
-                    icon={ClockIcon} 
-                    title="Remaining" 
-                    value={`${remainingCount}`} 
+                <StatCard
+                    icon={ClockIcon}
+                    title="Remaining"
+                    value={`${remainingCount}`}
                     theme={statCardThemes.amber}
+                />
+            </div>
+
+            {/* Balance Section */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                <StatCard
+                    icon={WalletIcon}
+                    title="Current Balance"
+                    value={formatCurrency(balance)}
+                    theme={statCardThemes.indigo}
+                    onClick={onEditBalance}
+                    isClickable={true}
+                />
+                <StatCard
+                    icon={DollarIcon}
+                    title="After Bills"
+                    value={formatCurrency(remainingBalance)}
+                    theme={remainingBalance < 0 ? statCardThemes.red : statCardThemes.green}
                 />
             </div>
             
