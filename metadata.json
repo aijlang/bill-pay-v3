@@ -1,0 +1,6 @@
+{
+  "name": "Bill Pay Hub v2",
+  "description": "A centralized platform to manage and track your monthly bill payments. Add payment pages from your bill companies, track when you've paid, and see a clear overview of your paid and pending bills for the month.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
