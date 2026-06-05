@@ -14,6 +14,7 @@ import { WelcomeGraphic } from './constants';
 import { isPaidThisMonth, formatExportDate, formatCurrency } from './utils/formatters';
 
 const App: React.FC = () => {
+    // Force rebuild to fix CSS deployment issue
     const [localBills, setLocalBills] = useLocalStorage<Bill[]>('bills', []);
     const bills = localBills;
     const setBills = setLocalBills;
