@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rusted Sun Pizzeria | Salt Lake City, UT</title>
+  <meta name="description" content="Rusted Sun Pizzeria — handcrafted pizzas, calzones, and more in Salt Lake City's Granary/Ballpark neighborhood. 2010 S State St. Open Tue–Sun." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#home" class="nav__logo">
+        <span class="nav__logo-sun">☀</span>
+        <span>Rusted Sun</span>
+      </a>
+      <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#hours">Hours</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="tel:8014832120" class="nav__cta">Order: (801) 483-2120</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="home">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <p class="hero__tagline">Salt Lake City's Neighborhood Pizzeria</p>
+      <h1 class="hero__title">
+        Handcrafted Pizza.<br />
+        <span class="hero__title--accent">Made With Soul.</span>
+      </h1>
+      <p class="hero__sub">Thin-crust pies, calzones & more — baked fresh since we opened our doors in the Granary District.</p>
+      <div class="hero__actions">
+        <a href="#menu" class="btn btn--primary">See Our Menu</a>
+        <a href="tel:8014832120" class="btn btn--ghost">Call to Order</a>
+      </div>
+    </div>
+    <div class="hero__scroll-hint">
+      <span>Scroll</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ========== ABOUT ========== -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about__grid">
+        <div class="about__text">
+          <p class="section-label">Our Story</p>
+          <h2 class="section-title">A Slice of Something Real</h2>
+          <p class="about__body">
+            Rusted Sun Pizzeria was built on one simple idea: great pizza doesn't need to be complicated.
+            We use fresh, quality ingredients and take the time to get it right — every single pie, every
+            single day. No shortcuts, no compromises.
+          </p>
+          <p class="about__body">
+            Tucked into Salt Lake City's Granary/Ballpark neighborhood, we're the kind of place where
+            regulars know our names and first-timers leave feeling like they've found a new favorite.
+            Come hungry. Leave happy.
+          </p>
+          <div class="about__stats">
+            <div class="about__stat">
+              <span class="about__stat-num">400+</span>
+              <span class="about__stat-label">Five-Star Reviews</span>
+            </div>
+            <div class="about__stat">
+              <span class="about__stat-num">$10–$30</span>
+              <span class="about__stat-label">Price Per Person</span>
+            </div>
+            <div class="about__stat">
+              <span class="about__stat-num">6</span>
+              <span class="about__stat-label">Days A Week</span>
+            </div>
+          </div>
+        </div>
+        <div class="about__visual">
+          <div class="about__img-frame">
+            <div class="about__img-placeholder">
+              <span class="about__img-icon">🍕</span>
+              <p>Fresh from the oven</p>
+            </div>
+          </div>
+          <div class="about__badge">
+            <span class="about__badge-text">Est. in SLC</span>
+            <span class="about__badge-sub">Granary District</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MENU ========== -->
+  <section class="menu" id="menu">
+    <div class="container">
+      <p class="section-label section-label--light">What We Serve</p>
+      <h2 class="section-title section-title--light">The Menu</h2>
+      <p class="menu__intro">Everything is made fresh. Build your own or choose from our house specialties.</p>
+
+      <!-- Category Tabs -->
+      <div class="menu__tabs" role="tablist">
+        <button class="menu__tab menu__tab--active" data-tab="appetizers" role="tab">Starters</button>
+        <button class="menu__tab" data-tab="salads" role="tab">Salads</button>
+        <button class="menu__tab" data-tab="pizzas" role="tab">Pizzas</button>
+        <button class="menu__tab" data-tab="calzones" role="tab">Calzones</button>
+        <button class="menu__tab" data-tab="pasta" role="tab">Pasta</button>
+        <button class="menu__tab" data-tab="desserts" role="tab">Desserts</button>
+      </div>
+
+      <!-- Starters -->
+      <div class="menu__panel menu__panel--active" id="tab-appetizers">
+        <div class="menu__grid">
+          <div class="menu__item">
+            <div class="menu__item-header">
+              <h3 class="menu__item-name">Garlic Bread Stix</h3>
+              <span class="menu__item-tag">Fan Favorite</span>
+            </div>
+            <p class="menu__item-desc">Warm garlic bread sticks served with a side of housemade mozzarella sauce for dipping.</p>
+          </div>
+          <div class="menu__item">
+            <div class="menu__item-header">
+              <h3 class="menu__item-name">Killer Cheese Dip</h3>
+              <span class="menu__item-tag">Fan Favorite</span>
+            </div>
+            <p class="menu__item-desc">Our signature rich, melted cheese dip — perfect for sharing (or not).</p>
+          </div>
+          <div class="menu__item">
+            <div class="menu__item-header">
+              <h3 class="menu__item-name">Buffalo Chicken</h3>
+            </div>
+            <p class="menu__item-desc">Crispy chicken tossed in tangy buffalo sauce. A spicy kick to start your meal.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Salads -->
+      <div class="menu__panel" id="tab-salads">
+        <div class="menu__grid">
+          <div class="menu__item">
+            <h3 class="menu__item-name">Garden Salad</h3>
+            <p class="menu__item-desc">Fresh mixed greens, tomato, cucumber, and your choice of dressing.</p>
+          </div>
+          <div class="menu__item">
+            <h3 class="menu__item-name">Dinner Salad</h3>
+            <p class="menu__item-desc">A heartier salad to complement your main — ask your server for today's build.</p>
+          </div>
+          <div class="menu__item">
+            <h3 class="menu__item-name">Italian Salad</h3>
+            <p class="menu__item-desc">Crisp romaine, olives, pepperoncini, red onion, and Italian dressing.</p>
+          </div>
+          <div class="menu__item">
+            <h3 class="menu__item-name">Pasta Salad</h3>
+            <p class="menu__item-desc">Chilled rotini tossed with fresh vegetables and a housemade vinaigrette.</p>
+          </div>
+          <div class="menu__item">
+            <div class="menu__item-header">
+              <h3 class="menu__item-name">Bleu Chicken Salad</h3>
+              <span class="menu__item-tag">House Specialty</span>
+            </div>
+            <p class="menu__item-desc">Grilled chicken, bleu cheese crumbles, candied walnuts, and mixed greens with a tangy dressing.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pizzas -->
+      <div class="menu__panel" id="tab-pizzas">
+        <p class="menu__panel-note">All pizzas available in multiple sizes. Gluten-free crust available upon request.</p>
+        <div class="menu__grid menu__grid--pizzas">
+          <div class="menu__item menu__item--featured">
+            <div class="menu__item-header">
+              <h3 class="menu__item-name">Margherita</h3>
+              <span class="menu__item-tag">Classic</span>
+            </div>
+            <p class="menu__item-desc">House tomato sauce, fresh mozzarella, whole basil leaves, drizzled with olive oil. Simple perfection.</p>
+          </div>
+          <div class="menu__item menu__item--featured">
+            <div class="menu__item-header">
+              <h3 class="menu__item-name">Bleu Chicken</h3>
+              <span class="menu__item-tag">House Specialty</span>
+            </div>
+            <p class="menu__item-desc">Ranch base, grilled chicken, bleu cheese crumbles, red onion, and mozzarella.</p>
+          </div>
+          <div class="menu__item menu__item--featured">
+            <div class="menu__item-header">
+              <h3 class="menu__item-name">White Pie</h3>
+              <span class="menu__item-tag">Chef's Pick</span>
+            </div>
+            <p class="menu__item-desc">Garlic-cream base, mozzarella, fresh spinach, and roasted red peppers. Rich, white, and irresistible.</p>
+          </div>
+          <div class="menu__item menu__item--featured">
+            <div class="menu__item-header">
+              <h3 class="menu__item-name">Deluxe Veggie Combo</h3>
+            </div>
+            <p class="menu__item-desc">House sauce loaded with seasonal vegetables and a generous blend of melted cheese.</p>
+          </div>
+          <div class="menu__item menu__item--byo">
+            <div class="menu__byo-icon">✦</div>
+            <h3 class="menu__item-name">Build Your Own</h3>
+            <p class="menu__item-desc">Start with your choice of sauce, crust, and cheese — then pile on from our full list of toppings.</p>
+            <a href="tel:8014832120" class="btn btn--small">Call to Build Yours</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calzones -->
+      <div class="menu__panel" id="tab-calzones">
+        <p class="menu__panel-note">All calzones come with marinara dipping sauce on the side.</p>
+        <div class="menu__grid">
+          <div class="menu__item">
+            <h3 class="menu__item-name">Classic Calzone</h3>
+            <p class="menu__item-desc">Ricotta, mozzarella, and your choice of meat or veggie fillings, folded and baked golden.</p>
+          </div>
+          <div class="menu__item">
+            <h3 class="menu__item-name">Meat Lover's Calzone</h3>
+            <p class="menu__item-desc">Packed with pepperoni, sausage, ham, and mozzarella. The full works.</p>
+          </div>
+          <div class="menu__item">
+            <h3 class="menu__item-name">Veggie Calzone</h3>
+            <p class="menu__item-desc">Spinach, mushrooms, roasted red peppers, onions, and ricotta. Hearty without the meat.</p>
+          </div>
+          <div class="menu__item menu__item--byo">
+            <div class="menu__byo-icon">✦</div>
+            <h3 class="menu__item-name">Build Your Own Calzone</h3>
+            <p class="menu__item-desc">Mix and match your fillings from our full topping list. Ask your server or call ahead.</p>
+            <a href="tel:8014832120" class="btn btn--small">Call to Build Yours</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pasta -->
+      <div class="menu__panel" id="tab-pasta">
+        <div class="menu__grid">
+          <div class="menu__item menu__item--featured">
+            <div class="menu__item-header">
+              <h3 class="menu__item-name">Lasagna</h3>
+              <span class="menu__item-tag">Fan Favorite</span>
+            </div>
+            <p class="menu__item-desc">Layers of housemade meat sauce, ricotta, mozzarella, and pasta — baked until bubbling and golden. Served with garlic bread.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desserts -->
+      <div class="menu__panel" id="tab-desserts">
+        <div class="menu__grid">
+          <div class="menu__item menu__item--featured">
+            <div class="menu__item-header">
+              <h3 class="menu__item-name">Cheesecake</h3>
+              <span class="menu__item-tag">House Made</span>
+            </div>
+            <p class="menu__item-desc">Rich, creamy cheesecake on a buttery graham cracker crust. The perfect finish. Ask your server for today's flavor.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== HOURS & LOCATION ========== -->
+  <section class="hours" id="hours">
+    <div class="container">
+      <div class="hours__grid">
+        <div class="hours__info">
+          <p class="section-label">Visit Us</p>
+          <h2 class="section-title">Hours & Location</h2>
+          <div class="hours__table">
+            <div class="hours__row hours__row--closed">
+              <span class="hours__day">Monday</span>
+              <span class="hours__time">Closed</span>
+            </div>
+            <div class="hours__row">
+              <span class="hours__day">Tuesday – Friday</span>
+              <span class="hours__time">11:30 am – 9:00 pm</span>
+            </div>
+            <div class="hours__row">
+              <span class="hours__day">Saturday</span>
+              <span class="hours__time">11:30 am – 9:00 pm</span>
+            </div>
+            <div class="hours__row">
+              <span class="hours__day">Sunday</span>
+              <span class="hours__time">4:00 pm – 8:00 pm</span>
+            </div>
+          </div>
+          <div class="hours__address">
+            <div class="hours__address-icon">📍</div>
+            <div>
+              <p class="hours__address-line">2010 S State St</p>
+              <p class="hours__address-line">Salt Lake City, UT 84115</p>
+              <p class="hours__address-sub">Granary/Ballpark Neighborhood</p>
+            </div>
+          </div>
+          <a href="https://maps.google.com/?q=2010+S+State+St+Salt+Lake+City+UT+84115" target="_blank" rel="noopener" class="btn btn--primary">Get Directions</a>
+        </div>
+        <div class="hours__map">
+          <iframe
+            title="Rusted Sun Pizzeria Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9!2d-111.891!3d40.7282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87525f9b77b8d5b5%3A0x2c90e1c3e9c3a1a5!2s2010+S+State+St%2C+Salt+Lake+City%2C+UT+84115!5e0!3m2!1sen!2sus!4v1"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="contact__inner">
+        <p class="section-label section-label--light">Get In Touch</p>
+        <h2 class="section-title section-title--light">We'd Love to Hear From You</h2>
+        <p class="contact__sub">Have a question? Want to place a large order or plan a group outing? Give us a call.</p>
+        <div class="contact__cards">
+          <a href="tel:8014832120" class="contact__card">
+            <div class="contact__card-icon">📞</div>
+            <h3 class="contact__card-title">Call Us</h3>
+            <p class="contact__card-value">(801) 483-2120</p>
+          </a>
+          <div class="contact__card">
+            <div class="contact__card-icon">📍</div>
+            <h3 class="contact__card-title">Find Us</h3>
+            <p class="contact__card-value">2010 S State St<br />Salt Lake City, UT 84115</p>
+          </div>
+          <div class="contact__card">
+            <div class="contact__card-icon">🕐</div>
+            <h3 class="contact__card-title">Hours</h3>
+            <p class="contact__card-value">Tue–Sat: 11:30 am–9 pm<br />Sun: 4–8 pm &nbsp;|&nbsp; Mon: Closed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <a href="#home" class="footer__logo">
+            <span class="footer__logo-sun">☀</span>
+            <span>Rusted Sun Pizzeria</span>
+          </a>
+          <p class="footer__tagline">Handcrafted pizza in Salt Lake City since day one.</p>
+        </div>
+        <div class="footer__links">
+          <h4 class="footer__heading">Navigate</h4>
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#hours">Hours & Location</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__contact">
+          <h4 class="footer__heading">Contact</h4>
+          <p><a href="tel:8014832120">(801) 483-2120</a></p>
+          <p>2010 S State St<br />Salt Lake City, UT 84115</p>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2024 Rusted Sun Pizzeria. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
